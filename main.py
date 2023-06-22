@@ -18,7 +18,7 @@ def main() -> None:
         arquivos_js = encontrar_arquivos_js(diretorio_appdata, diretorio_discord)
         for arquivo_js in arquivos_js:
             if contem_token_mfa(arquivo_js):
-                print(f'[!] Possible token grabber in {file_js}, opening...')
+                print(f'[!] Possible token grabber in {arquivo_js}, opening...')
                 subprocess.run(f"notepad.exe {arquivo_js}")
                 encontrou = True
     if not encontrou:
