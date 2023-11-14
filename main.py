@@ -5,10 +5,8 @@ import glob
 from typing import List
 
 def main() -> None:
-    if platform.system() != "Windows":
-        exit()
+    diretorio_appdata = os.getenv('LOCALAPPDATA') if platform.system() == "Windows" else (os.path.expanduser('~/Library/Application Support') if platform.system() == "Darwin" else os.path.expanduser('~'))
 
-    diretorio_appdata = os.getenv('LOCALAPPDATA')
     if diretorio_appdata is None:
         return
 
@@ -19,7 +17,7 @@ def main() -> None:
         for arquivo_js in arquivos_js:
             if contem_token_mfa(arquivo_js):
                 print(f'[!] Possible token grabber in {arquivo_js}, opening...')
-                subprocess.run(f"notepad.exe {arquivo_js}")
+                abrir(arquivo_js)
                 encontrou = True
     if not encontrou:
         print('[!] No suspicious file was found.')
@@ -38,6 +36,20 @@ def contem_token_mfa(arquivo_js: str) -> bool:
     with open(arquivo_js, 'r') as f:
         conteudo = f.read()
         return 'mfa.' in conteudo
+
+def abrir(arquivo: str) -> None:
+    if platform.system() == "Windows":
+        subprocess.run(["notepad.exe", arquivo])
+    elif platform.system() == "Darwin":
+        try:
+            subprocess.run(["open", "-t", arquivo])
+        except:
+            subprocess.run(["nano", arquivo])
+    elif platform.system() == "Linux":
+        try:
+            subprocess.run(["xdg-open", arquivo])
+        except:
+            subprocess.run(["vim", arquivo])
 
 if __name__ == '__main__':
     main()
