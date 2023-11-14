@@ -25,7 +25,7 @@ def main() -> None:
 def encontrar_diretorios_discord(diretorio_main: str) -> List[str]:
     diretorios_discord = []
     for diretorio in os.listdir(diretorio_main):
-        if os.path.isdir(os.path.join(diretorio_main, diretorio)) and 'Discord' in diretorio:
+        if os.path.isdir(os.path.join(diretorio_main, diretorio)) and 'discord' in diretorio.lower():
             diretorios_discord.append(diretorio)
     return diretorios_discord
 
